@@ -18,6 +18,15 @@
             height: 100vh;
             background-color: transparent;
         }
+        .loader {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -33,7 +42,35 @@
         shadow-softness="0"
         stage-light-intensity="2"
         environment-intensity="1"
-        camera-orbit="0deg 75deg 105%">
+        camera-orbit="0deg 75deg 105%"
+        autoplay
+        preload
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        reveal="immediate"
+        loading="eager">
+        <div class="loader" slot="poster">Loading...</div>
     </model-viewer>
+
+    <script>
+        const modelViewer = document.querySelector('model-viewer');
+        
+        // Immediately start rotation, don't wait for full load
+        modelViewer.addEventListener('load', () => {
+            // Force autoRotate to true after load
+            modelViewer.autoRotate = true;
+        });
+        
+        // Preemptively start rotation
+        window.addEventListener('DOMContentLoaded', () => {
+            // Force rotation even before full model load
+            modelViewer.autoRotate = true;
+            
+            // Add a timer to ensure rotation is active
+            setTimeout(() => {
+                modelViewer.autoRotate = true;
+            }, 100);
+        });
+    </script>
 </body>
 </html>
